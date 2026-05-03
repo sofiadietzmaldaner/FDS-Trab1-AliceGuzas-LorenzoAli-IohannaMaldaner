@@ -1,5 +1,6 @@
 package br.pucrs.fds.equipe6.trab1;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -14,10 +15,23 @@ public class Contrato {
     private List<Uso> usos;
 
 
-    public Contrato(int id, Date data, int periodo) {
+    public Contrato(int id, Date data, int periodo, Cliente cliente, Jogo jogo, Uso uso) {
         this.id = id;
         this.data = data;
         this.periodo = periodo;
+        this.cliente = cliente;
+        this.jogo = jogo;
+
+        usos = new ArrayList<Uso>();
+        usos.add(uso);
+    }
+
+    public Cliente getCliente(){
+        return this.cliente;
+    }
+
+    public void addUso(Uso uso){
+        usos.add(uso);
     }
 
     public int getId() {
@@ -46,6 +60,10 @@ public class Contrato {
 
     public Jogo getJogo(){
         return this.jogo;
+    }
+
+    public List<Uso> getUsos(){
+        return this.usos;
     }
 
     // Consulta a data final do contrato data + periodo

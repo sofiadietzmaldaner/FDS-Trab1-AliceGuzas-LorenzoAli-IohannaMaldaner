@@ -12,7 +12,6 @@ public class Clientela {
         clientes= new ArrayList<Cliente>();
 
     }
-
     public List<Cliente> getClientes() {
         return this.clientes;
     }
@@ -23,6 +22,14 @@ public class Clientela {
 
     public void addCliente(Cliente c){
         clientes.add(c);
+    }
+
+    public Cliente buscarClienteCPF(String cpf){
+
+            return clientes.stream()
+                    .filter(c -> c.getCPF().equals(cpf))
+                    .findFirst()
+                    .orElse(null);
     }
 
 }

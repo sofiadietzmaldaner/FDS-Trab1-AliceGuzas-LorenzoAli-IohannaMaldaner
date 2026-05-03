@@ -1,6 +1,7 @@
 package br.pucrs.fds.equipe6.trab1;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Contratos {
 
@@ -22,6 +23,9 @@ public class Contratos {
         contratos.add(c);
     }
 
-
+    public List<Contrato> consultarContratosCompletos() {
+        return contratos.stream()
+                .toList();
+    }
 
 }
