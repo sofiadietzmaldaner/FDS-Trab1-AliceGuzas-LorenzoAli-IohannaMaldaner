@@ -1,6 +1,9 @@
 package br.pucrs.fds.equipe6.trab1;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 public class Jogo {
     private int cod;
@@ -8,23 +11,23 @@ public class Jogo {
     private int ano;
     private double valorMinuto;
     private Categoria categoria;
-    private boolean removido;
-    private Date dataObsolescencia;
-
+    private Situacao situacao;
+    private Date dataObsoleto;
 
     public Jogo(int cod, String nome, int ano, double valorMinuto) {
         this.cod = cod;
         this.nome = nome;
         this.ano = ano;
         this.valorMinuto = valorMinuto;
+        this.situacao = Situacao.DISPONIVEL;
     }
 
-    public void tornarObsoleto() {
-        this.dataObsolescencia = new Date();
+    public void setSituacao(Situacao situacao){
+        this.situacao = situacao;
     }
 
-    public boolean isRemovido() {
-        return removido;
+    public Situacao getSituacao(){
+        return this.situacao;
     }
 
     public int getCod() {
@@ -59,8 +62,65 @@ public class Jogo {
         this.valorMinuto = valorMinuto;
     }
 
-    public void setRemovido(boolean removido) {
-        this.removido = removido;
+
+    public boolean estaContratado(Contratos contratos){
+        List<Contrato> contratosDoJogo = contratos.getContratos()
+                                                    .stream()
+                                                    .filter(c -> c.getJogo().equals(this))
+                                                    .toList();
+        return  !contratosDoJogo.isEmpty();
     }
 
+    public boolean estaObsoleto(Contratos contratos){
+
+        Calendar limite = Calendar.getInstance();
+        limite.add(Calendar.YEAR, -2);
+        Date dataLimite = limite.getTime();
+
+        List<Contrato> contratosDoJogo = contratos.getContratos()
+                                                    .stream()
+                                                    .filter(c -> c.getJogo().equals(this))
+                                                    .toList();
+
+    // Caso 1:nunca teve contrato e foi lançado há mais de 2 anos
+    if(contratosDoJogo.isEmpty()) {
+
+        Calendar lancamento = Calendar.getInstance();
+
+        lancamento.set(this.getAno(), Calendar.JANUARY,1,0,0,0);
+        lancamento.set(Calendar.MILLISECOND, 0);
+
+        if (lancamento.getTime().before(dataLimite)){
+            this.dataObsoleto = new Date();
+            return true;
+        }
+    } else{
+
+    // Caso 2:último contrato expirou há mais de 2 anos
+
+            Date ultimaDataFim = contratosDoJogo.stream()
+                                                .flatMap(c -> c.getUsos().stream())
+                                                .map(Uso::getDataFim)
+                                                .filter(Objects::nonNull)
+                                                .max(Date::compareTo)
+                                                .orElse(null);
+
+            if(ultimaDataFim != null && ultimaDataFim.before(dataLimite)){
+                this.dataObsoleto = new Date();
+                return true;
+            } else return false;
+         }
+        return false;
+    }
+
+    public boolean estaRemovido(Contratos contratos){
+
+        if(dataObsoleto == null)
+            return false;
+
+        Calendar limite = Calendar.getInstance();
+        limite.add(Calendar.YEAR, -1);
+
+        return dataObsoleto.before(limite.getTime());
+    }
 }
