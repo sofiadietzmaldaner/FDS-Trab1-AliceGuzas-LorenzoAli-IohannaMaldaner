@@ -27,5 +27,26 @@ public class Contratos {
         return contratos.stream()
                 .toList();
     }
+    
+    //metodos que usei nos endpoints 5,6 e 10
+
+    public Contrato buscarContratoPorId(int id) {
+        return contratos.stream()
+                .filter(c -> c.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public boolean addContratoValidado(ContratoDTO contratoDTO, Clientela clientes, Jogos jogos) {
+        Cliente cliente = clientes.buscarClienteCPF(contratoDTO.getCpf());
+        Jogo jogo = jogos.buscaJogoCod(contratoDTO.getCodigoJogo());
+
+        if (cliente == null || jogo == null) return false;
+
+        Uso usoInicial = new Uso(0, new Date(), new Date(), 0, 0);
+        Contrato novo = new Contrato(contratoDTO.getId(), new Date(), contratoDTO.getPeriodo(), cliente, jogo, usoInicial);
+        contratos.add(novo);
+        return true;
+    }
 
 }
