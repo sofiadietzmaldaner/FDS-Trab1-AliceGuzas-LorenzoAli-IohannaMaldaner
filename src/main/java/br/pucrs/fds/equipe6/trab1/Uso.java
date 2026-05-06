@@ -71,7 +71,7 @@ public class Uso {
         LocalTime horaFim = LocalTime.of(horarioFim % 24, 0);
 
         LocalDateTime dataHoraIni = LocalDateTime.of(dataIni, horaIni);
-        LocalDateTime dataHoraFim = LocalDateTime.of(dataIni, horaIni);
+        LocalDateTime dataHoraFim = LocalDateTime.of(dataF, horaFim);
 
         return Duration.between(dataHoraIni, dataHoraFim).toMinutes();
     }

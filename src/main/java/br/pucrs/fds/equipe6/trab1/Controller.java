@@ -33,7 +33,7 @@ public class Controller{
         jogos = new Jogos();
         jogos.addJogo(new Jogo(1, "The Last of Us",       2013, 199.90, categorias.getCategoriaPorNome("Aventura")));
         jogos.addJogo(new Jogo(2, "Red Dead Redemption",  2018, 249.99, categorias.getCategoriaPorNome("Aventura")));
-        jogos.addJogo(new Jogo(3, "God of War",           2022, 299.90, categorias.getCategoriaPorNome("Aventura")));
+        jogos.addJogo(new Jogo(3, "God of War",           2022, 0.05, categorias.getCategoriaPorNome("Aventura")));
         jogos.addJogo(new Jogo(4, "Cyberpunk 2077",       2020, 149.99, categorias.getCategoriaPorNome("Shooter")));
         jogos.addJogo(new Jogo(5, "Elden Ring",           2022, 349.90, categorias.getCategoriaPorNome("RPG")));
         jogos.addJogo(new Jogo(6, "Fifa",                 2016, 150.00, categorias.getCategoriaPorNome("Simulador")));
