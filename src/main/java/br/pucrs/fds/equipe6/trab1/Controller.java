@@ -1,20 +1,19 @@
 package br.pucrs.fds.equipe6.trab1;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/teste")
+@RequestMapping("/acmespiele")
 public class Controller{
     private Clientela clientes;
     private Jogos jogos;
     private Contratos contratos;
+    private Categorias categorias;
 
     public Controller() {
         clientes = new Clientela();
@@ -24,18 +23,25 @@ public class Controller{
         clientes.addCliente(new Cliente("Carlos Souza",      "444.444.444-44", "carlos.souza@outlook.com",    new Date(), "carl#321"));
         clientes.addCliente(new Cliente("Fernanda Oliveira", "555.555.555-55", "fernanda.oli@yahoo.com",      new Date(), "fern@000"));
 
+        categorias = new Categorias();
+        categorias.addCategoria(new Categoria(1, "Shooter", 100.00));
+        categorias.addCategoria(new Categoria(2, "RPG", 200.00));
+        categorias.addCategoria(new Categoria(3, "Luta", 50.50));
+        categorias.addCategoria(new Categoria(4, "Simulador", 300.99));
+        categorias.addCategoria(new Categoria(5, "Aventura", 150.00));
+
         jogos = new Jogos();
-        jogos.addJogo(new Jogo(1, "The Last of Us",       2013, 199.90));
-        jogos.addJogo(new Jogo(2, "Red Dead Redemption",  2018, 249.99));
-        jogos.addJogo(new Jogo(3, "God of War",           2022, 299.90));
-        jogos.addJogo(new Jogo(4, "Cyberpunk 2077",       2020, 149.99));
-        jogos.addJogo(new Jogo(5, "Elden Ring",           2022, 349.90));
-        jogos.addJogo(new Jogo(6, "Fifa",                 2016, 150.00));
-        jogos.addJogo(new Jogo(7, "CS 2",                 2023, 349.90));
-        jogos.addJogo(new Jogo(8, "EA FC 26",                 2026, 349.90));
-        jogos.addJogo(new Jogo(9, "The Witcher 3",                 2015, 349.90));
-        jogos.addJogo(new Jogo(10, "GTA VI",                 2026, 349.90));
-        jogos.addJogo(new Jogo(10, "THE SIMS",                 2025, 349.90));
+        jogos.addJogo(new Jogo(1, "The Last of Us",       2013, 199.90, categorias.getCategoriaPorNome("Aventura")));
+        jogos.addJogo(new Jogo(2, "Red Dead Redemption",  2018, 249.99, categorias.getCategoriaPorNome("Aventura")));
+        jogos.addJogo(new Jogo(3, "God of War",           2022, 299.90, categorias.getCategoriaPorNome("Aventura")));
+        jogos.addJogo(new Jogo(4, "Cyberpunk 2077",       2020, 149.99, categorias.getCategoriaPorNome("Shooter")));
+        jogos.addJogo(new Jogo(5, "Elden Ring",           2022, 349.90, categorias.getCategoriaPorNome("RPG")));
+        jogos.addJogo(new Jogo(6, "Fifa",                 2016, 150.00, categorias.getCategoriaPorNome("Simulador")));
+        jogos.addJogo(new Jogo(7, "CS 2",                 2023, 349.90, categorias.getCategoriaPorNome("Shooter")));
+        jogos.addJogo(new Jogo(8, "EA FC 26",                 2026, 349.90, categorias.getCategoriaPorNome("Simulador")));
+        jogos.addJogo(new Jogo(9, "The Witcher 3",                 2015, 349.90, categorias.getCategoriaPorNome("RPG")));
+        jogos.addJogo(new Jogo(10, "GTA VI",                 2026, 349.90, categorias.getCategoriaPorNome("Shooter")));
+        jogos.addJogo(new Jogo(10, "THE SIMS",                 2025, 349.90, categorias.getCategoriaPorNome("Simulador")));
 
 
         contratos = new Contratos();
@@ -130,9 +136,34 @@ public class Controller{
     }
 
     // Consultar jogos por situação Disponivel, Contratado, Obsoleto ou Removido
-    @GetMapping("/consultarjogossituacao")
-    public List<Jogo> consultaJogoPorSituacao(@RequestParam String situacao) {
+    @GetMapping("/consultarjogossituacao/{situacao}")
+    public List<Jogo> consultaJogoPorSituacao(@PathVariable String situacao) {
         jogos.atualizarSituacaoJogos(contratos);
         return jogos.consultaJogos(situacao);
+    }
+
+    // Calcula cobrança total de um cliente
+    @GetMapping("/consultatotalcliente")
+    public double consultaCobrancaPorCpf(@RequestParam String cpf) {
+        double valorTotal = 0;
+        List<Contrato> contratosCliente = contratos.getContratosPorCpf(cpf);
+
+        for (Contrato c : contratosCliente) {
+            double valorBase = c.getJogo().getCategoria().getValorMinimo();
+            double valorMinuto = c.getJogo().getValorMinuto();
+
+            for (Uso u : c.getUsos()) {
+                long minutos = u.getDuracaoMinutos();
+                double valorCalculado = valorBase + (minutos * valorMinuto);
+
+                if (valorCalculado > 500) {
+                    valorTotal += valorCalculado * 0.97;
+                } else {
+                    valorTotal += valorCalculado;
+                }
+            }
+        }
+
+        return valorTotal;
     }
 }

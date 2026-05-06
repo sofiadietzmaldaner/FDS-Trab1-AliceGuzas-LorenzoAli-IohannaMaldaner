@@ -28,4 +28,10 @@ public class Contratos {
                 .toList();
     }
 
+    public List<Contrato> getContratosPorCpf(String cpf) {
+        return contratos.stream()
+                .filter(c -> c.getCliente().getCPF().equals(cpf))
+                .toList();
+    }
+
 }

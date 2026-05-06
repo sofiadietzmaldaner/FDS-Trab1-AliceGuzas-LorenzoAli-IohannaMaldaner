@@ -14,12 +14,13 @@ public class Jogo {
     private Situacao situacao;
     private Date dataObsoleto;
 
-    public Jogo(int cod, String nome, int ano, double valorMinuto) {
+    public Jogo(int cod, String nome, int ano, double valorMinuto, Categoria categoria) {
         this.cod = cod;
         this.nome = nome;
         this.ano = ano;
         this.valorMinuto = valorMinuto;
         this.situacao = Situacao.DISPONIVEL;
+        this.categoria = categoria;
     }
 
     public void setSituacao(Situacao situacao){
@@ -62,6 +63,21 @@ public class Jogo {
         this.valorMinuto = valorMinuto;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public Date getDataObsoleto() {
+        return dataObsoleto;
+    }
+
+    public void setDataObsoleto(Date dataObsoleto) {
+        this.dataObsoleto = dataObsoleto;
+    }
 
     public boolean estaContratado(Contratos contratos){
         List<Contrato> contratosDoJogo = contratos.getContratos()
