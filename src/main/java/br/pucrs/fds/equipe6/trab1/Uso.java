@@ -1,13 +1,14 @@
 package br.pucrs.fds.equipe6.trab1;
 
+import java.time.*;
 import java.util.Date;
 
 public class Uso {
-    private  int numero;
-    private  Date dataInicio;
-    private  Date dataFim;
-    private  int horarioInicio;
-    private  int horarioFim;
+    private int numero;
+    private Date dataInicio;
+    private Date dataFim;
+    private int horarioInicio;
+    private int horarioFim;
 
 
     public Uso(int numero, Date dataInicio, Date dataFim, int horarioInicio, int horarioFim) {
@@ -56,6 +57,23 @@ public class Uso {
 
     public void setHorarioFim(int horarioFim) {
         this.horarioFim = horarioFim;
+    }
+
+    public long getDuracaoMinutos() {
+        LocalDate dataIni = dataInicio.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalTime horaIni = LocalTime.of(horarioInicio % 24, 0);
+
+        LocalDate dataF = dataFim.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalTime horaFim = LocalTime.of(horarioFim % 24, 0);
+
+        LocalDateTime dataHoraIni = LocalDateTime.of(dataIni, horaIni);
+        LocalDateTime dataHoraFim = LocalDateTime.of(dataF, horaFim);
+
+        return Duration.between(dataHoraIni, dataHoraFim).toMinutes();
     }
 
 }

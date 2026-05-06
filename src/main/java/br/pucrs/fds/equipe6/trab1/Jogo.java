@@ -14,12 +14,13 @@ public class Jogo {
     private Situacao situacao;
     private Date dataObsoleto;
 
-    public Jogo(int cod, String nome, int ano, double valorMinuto) {
+    public Jogo(int cod, String nome, int ano, double valorMinuto, Categoria categoria) {
         this.cod = cod;
         this.nome = nome;
         this.ano = ano;
         this.valorMinuto = valorMinuto;
         this.situacao = Situacao.DISPONIVEL;
+        this.categoria = categoria;
     }
 
     public void setSituacao(Situacao situacao){
@@ -62,6 +63,21 @@ public class Jogo {
         this.valorMinuto = valorMinuto;
     }
 
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public Date getDataObsoleto() {
+        return dataObsoleto;
+    }
+
+    public void setDataObsoleto(Date dataObsoleto) {
+        this.dataObsoleto = dataObsoleto;
+    }
 
     public boolean estaContratado(Contratos contratos){
         List<Contrato> contratosDoJogo = contratos.getContratos()
@@ -106,7 +122,6 @@ public class Jogo {
                                                 .orElse(null);
 
             if(ultimaDataFim != null && ultimaDataFim.before(dataLimite)){
-                this.dataObsoleto = new Date();
                 return true;
             } else return false;
          }
@@ -115,12 +130,23 @@ public class Jogo {
 
     public boolean estaRemovido(Contratos contratos){
 
-        if(dataObsoleto == null)
-            return false;
+        List<Contrato> contratosDoJogo = contratos.getContratos()
+                                                    .stream()
+                                                    .filter(c -> c.getJogo().equals(this))
+                                                    .toList();
 
         Calendar limite = Calendar.getInstance();
-        limite.add(Calendar.YEAR, -1);
+        limite.add(Calendar.YEAR, -3);
+        Date dataLimite = limite.getTime();
 
-        return dataObsoleto.before(limite.getTime());
+
+        Date ultimaDataFim = contratosDoJogo.stream()
+                                                .flatMap(c -> c.getUsos().stream())
+                                                .map(Uso::getDataFim)
+                                                .filter(Objects::nonNull)
+                                                .max(Date::compareTo)
+                                                .orElse(null);
+
+        return ultimaDataFim != null && ultimaDataFim.before(dataLimite);
     }
 }
