@@ -43,8 +43,7 @@ public class Contratos {
 
         if (cliente == null || jogo == null) return false;
 
-        Uso usoInicial = new Uso(0, new Date(), new Date(), 0, 0);
-        Contrato novo = new Contrato(contratoDTO.getId(), new Date(), contratoDTO.getPeriodo(), cliente, jogo, usoInicial);
+        Contrato novo = new Contrato(req.getId(), new Date(), req.getPeriodo(), cliente, jogo);
         contratos.add(novo);
         return true;
     }
