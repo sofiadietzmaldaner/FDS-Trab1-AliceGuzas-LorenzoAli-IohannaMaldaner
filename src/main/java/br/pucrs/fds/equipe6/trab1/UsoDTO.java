@@ -1,4 +1,4 @@
-package br.pucrs.fds.springboot_exercise;
+package br.pucrs.fds.equipe6.trab1;
 
 import java.util.Date;
 
