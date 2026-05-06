@@ -13,6 +13,7 @@ public class Contrato {
     private Cliente cliente;
     private Jogo jogo;
     private List<Uso> usos;
+    private boolean cancelado = false; // novo atributo ! para cancelar contratos (endpoint 10) 
 
 
     public Contrato(int id, Date data, int periodo, Cliente cliente, Jogo jogo, Uso uso) {
@@ -66,6 +67,14 @@ public class Contrato {
         return this.usos;
     }
 
+    public boolean isCancelado() {
+        return cancelado;
+    }
+
+    public void setCancelado(boolean cancelado) {
+        this.cancelado = cancelado;
+    }
+
     // Consulta a data final do contrato data + periodo
     public Date getDataFim() {
 
@@ -77,4 +86,6 @@ public class Contrato {
         return cal.getTime();
     }
 
+    // metodo que cancela logicamente nao fisicamente
+    public void cancelar() { this.cancelado = true; }
 }
