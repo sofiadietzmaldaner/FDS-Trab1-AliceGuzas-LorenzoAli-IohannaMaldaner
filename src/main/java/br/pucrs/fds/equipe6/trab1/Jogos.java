@@ -56,7 +56,7 @@ public class Jogos {
 
     public List<Jogo> consultaJogos(String s) {
 
-        Situacao situacao = Situacao.valueOf(s);
+        Situacao situacao = Situacao.buscaPorNome(s);
 
         return jogos.stream()
                     .filter(j -> j.getSituacao() == situacao)

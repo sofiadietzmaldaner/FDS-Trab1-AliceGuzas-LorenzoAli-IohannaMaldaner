@@ -25,7 +25,9 @@ public class Contratos {
 
     public List<Contrato> consultarContratosCompletos() {
         return contratos.stream()
-                .toList();
+                        .toList();
     }
+
+
 
 }
