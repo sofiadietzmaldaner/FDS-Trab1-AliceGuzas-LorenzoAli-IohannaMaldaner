@@ -38,12 +38,14 @@ public class Contratos {
     }
 
     public boolean addContratoValidado(ContratoDTO contratoDTO, Clientela clientes, Jogos jogos) {
+        if (buscarContratoPorId(contratoDTO.getId()) != null) return false; // id duplicado
+
         Cliente cliente = clientes.buscarClienteCPF(contratoDTO.getCpf());
         Jogo jogo = jogos.buscaJogoCod(contratoDTO.getCodigoJogo());
 
         if (cliente == null || jogo == null) return false;
 
-        Contrato novo = new Contrato(req.getId(), new Date(), req.getPeriodo(), cliente, jogo);
+        Contrato novo = new Contrato(contratoDTO.getId(), new Date(), contratoDTO.getPeriodo(), cliente, jogo);
         contratos.add(novo);
         return true;
     }
