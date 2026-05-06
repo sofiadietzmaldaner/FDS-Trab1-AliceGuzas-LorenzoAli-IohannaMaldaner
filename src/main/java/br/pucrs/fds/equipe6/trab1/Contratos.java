@@ -1,6 +1,7 @@
 package br.pucrs.fds.equipe6.trab1;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Contratos {

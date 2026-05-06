@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 
 @RestController
@@ -161,16 +161,28 @@ public class Controller{
         return true;
     }
 
-    //endpoint 10: Cancelar contrato logicamente
-    @DeleteMapping("/cadastro/cancelacontrato")
-    public boolean cancelarContrato(@RequestBody int id) {
-        Contrato contrato = contratos.buscarContratoPorId(id);
-        if (contrato == null) return false;
-        contrato.cancelar();
-        return true;
+    // Endpoint 7: Calcular o valor total de um contrato
+    @GetMapping("/consultatotalcontrato")
+    public double calculaValorContrato(@RequestParam int id) {
+        double valorTotal = 0;
+
+        Contrato c = contratos.buscarContratoPorId(id);
+        if (c == null) return 0;
+
+        double valorBase = c.getJogo().getCategoria().getValorMinimo();
+        double valorMinuto = c.getJogo().getValorMinuto();
+
+        List<Uso> usos = c.getUsos();
+
+        for (Uso u : usos) {
+            long minutos = u.getDuracaoMinutos();
+            valorTotal += valorBase + (valorMinuto * minutos);
+        }
+
+        return valorTotal;
     }
 
-    // Calcula cobrança total de um cliente
+    // Endpoint 8: Calcula cobrança total de um cliente
     @GetMapping("/consultatotalcliente")
     public double consultaCobrancaPorCpf(@RequestParam String cpf) {
         double valorTotal = 0;
@@ -191,7 +203,28 @@ public class Controller{
                 }
             }
         }
-
         return valorTotal;
+    }
+
+    // Endpoint 9: Alterar a situação de um jogo
+    @PutMapping("/cadastro/atualizajogo/{codigo}/situacao/{status}")
+    public ResponseEntity<Jogo> alteraSituacaoJogo(@PathVariable int codigo, @PathVariable String situacaoStr) {
+        Jogo j = jogos.buscaJogoCod(codigo);
+        if (j == null) return ResponseEntity.notFound().build();
+
+        Situacao situacao = Situacao.buscaPorNome(situacaoStr);
+        if(situacao == null) return ResponseEntity.badRequest().build();
+
+        j.setSituacao(situacao);
+        return ResponseEntity.ok(j);
+    }
+
+    // Endpoint 10: Cancelar contrato logicamente
+    @DeleteMapping("/cadastro/cancelacontrato")
+    public boolean cancelarContrato(@RequestBody int id) {
+        Contrato contrato = contratos.buscarContratoPorId(id);
+        if (contrato == null) return false;
+        contrato.cancelar();
+        return true;
     }
 }
