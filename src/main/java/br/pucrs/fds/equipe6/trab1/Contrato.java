@@ -26,6 +26,17 @@ public class Contrato {
         usos = new ArrayList<Uso>();
         usos.add(uso);
     }
+    
+    //construtor pro metodo da classe contratos 
+    public Contrato(int id, Date data, int periodo, Cliente cliente, Jogo jogo) {
+    this.id = id;
+    this.data = data;
+    this.periodo = periodo;
+    this.cliente = cliente;
+    this.jogo = jogo;
+    this.usos = new ArrayList<>();
+    this.cancelado = false;
+    }
 
     public Cliente getCliente(){
         return this.cliente;
