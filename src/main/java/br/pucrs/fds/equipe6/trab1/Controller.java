@@ -3,10 +3,7 @@ package br.pucrs.fds.equipe6.trab1;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -111,28 +108,51 @@ public class Controller{
         );
     }
 
-    // Consultar todos os clientes
+    //endpoint 1: Consultar todos os clientes
     @GetMapping("/listaclientes")
         public List<Cliente> getClientes() {
         return clientes.getClientes();
     }
 
-    // Consultar todos os jogos cadastrados
+    //endpoint 2: Consultar todos os jogos cadastrados
     @GetMapping("/listajogos")
     public List<Jogo> getJogos() {
         return jogos.getJogos();
     }
 
-    //Consultar todos os contratos clientes, jogos e usos correspondentes
+    //endpoint 3: Consultar todos os contratos clientes, jogos e usos correspondentes
     @GetMapping("/listacontratos")
     public List<Contrato> consultarContratos() {
         return contratos.getContratos();
     }
 
-    // Consultar jogos por situação Disponivel, Contratado, Obsoleto ou Removido
+    //endpoint 4: Consultar jogos por situação Disponivel, Contratado, Obsoleto ou Removido
     @GetMapping("/consultarjogossituacao")
     public List<Jogo> consultaJogoPorSituacao(@RequestParam String situacao) {
         jogos.atualizarSituacaoJogos(contratos);
         return jogos.consultaJogos(situacao);
+    }
+     //endpoint 5: Cadastrar novo contrato
+    @PostMapping("/cadastro/cadcontrato")
+    public boolean cadastrarContrato(@RequestBody ContratoDTO contratoDTO) {
+        return contratos.addContratoValidado(contratoDTO, clientes, jogos);
+    }
+
+    //endpoint 6: Cadastrar novo uso de contrato
+    @PostMapping("/cadastro/caduso")
+    public boolean cadastrarUso(@RequestBody UsoDTO usoDTO) {
+        Contrato contrato = contratos.buscarContratoPorId(usoDTO.getIdContrato());
+        if (contrato == null) return false;
+        contrato.addUso(new Uso(usoDTO.getNumero(), usoDTO.getDataInicio(), usoDTO.getDataFim(), usoDTO.getHorarioInicio(), usoDTO.getHorarioFim()));
+        return true;
+    }
+
+    //endpoint 10: Cancelar contrato logicamente
+    @DeleteMapping("/cadastro/cancelacontrato")
+    public boolean cancelarContrato(@RequestBody int id) {
+        Contrato contrato = contratos.buscarContratoPorId(id);
+        if (contrato == null) return false;
+        contrato.cancelar();
+        return true;
     }
 }
