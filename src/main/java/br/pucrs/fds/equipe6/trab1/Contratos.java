@@ -25,7 +25,7 @@ public class Contratos {
 
     public List<Contrato> consultarContratosCompletos() {
         return contratos.stream()
-                .toList();
+                        .toList();
     }
 
     public List<Contrato> getContratosPorCpf(String cpf) {
