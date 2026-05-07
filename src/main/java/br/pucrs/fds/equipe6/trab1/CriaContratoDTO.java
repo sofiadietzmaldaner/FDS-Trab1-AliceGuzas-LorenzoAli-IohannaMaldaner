@@ -1,6 +1,7 @@
 package br.pucrs.fds.equipe6.trab1;
 
 import java.util.List;
+import java.util.Date;
 
 public class CriaContratoDTO {
     private int id;
