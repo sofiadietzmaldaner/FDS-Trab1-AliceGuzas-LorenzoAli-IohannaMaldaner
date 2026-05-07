@@ -52,7 +52,7 @@ public class Contratos {
 
         if (cliente == null || jogo == null) return false;
 
-        Contrato novo = new Contrato(contratoDTO.getId(), new Date(), contratoDTO.getPeriodo(), cliente, jogo);
+        Contrato novo = new Contrato(contratoDTO.getId(), contratoDTO.getData(), contratoDTO.getPeriodo(), cliente, jogo);
         contratos.add(novo);
         return true;
     }
