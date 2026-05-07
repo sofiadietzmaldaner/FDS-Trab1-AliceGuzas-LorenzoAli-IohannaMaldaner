@@ -5,15 +5,8 @@ import java.util.List;
 public class CriaContratoDTO {
     private int id;
     private int periodo;
-
-    private int codigoJogo;
-
     private String cpf;
-    private String nomeCliente;
-    private String nomeJogo;
-    private String categoria;
-
-    private List<UsoDTO> usos;
+    private int codigoJogo;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
