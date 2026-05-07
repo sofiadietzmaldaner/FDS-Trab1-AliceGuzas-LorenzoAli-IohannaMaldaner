@@ -214,11 +214,11 @@ public class Controller{
 
     // Endpoint 9: Alterar a situação de um jogo
     @PutMapping("/cadastro/atualizajogo/{codigo}/situacao/{status}")
-    public ResponseEntity<Jogo> alteraSituacaoJogo(@PathVariable int codigo, @PathVariable String situacaoStr) {
+    public ResponseEntity<Jogo> alteraSituacaoJogo(@PathVariable int codigo, @PathVariable String status) {
         Jogo j = jogos.buscaJogoCod(codigo);
         if (j == null) return ResponseEntity.notFound().build();
 
-        Situacao situacao = Situacao.buscaPorNome(situacaoStr);
+        Situacao situacao = Situacao.buscaPorNome(status);
         if(situacao == null) return ResponseEntity.badRequest().build();
 
         j.setSituacao(situacao);
