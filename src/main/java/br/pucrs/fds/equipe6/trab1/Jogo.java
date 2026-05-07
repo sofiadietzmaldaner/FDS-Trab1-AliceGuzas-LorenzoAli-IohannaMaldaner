@@ -5,16 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 public class Jogo {
     private int cod;
     private String nome;
-    @JsonIgnore
     private int ano;
     private double valorMinuto;
     private Categoria categoria;
-    @JsonIgnore
     private Situacao situacao;
 
     public Jogo(int cod, String nome, int ano, double valorMinuto, Categoria categoria) {
