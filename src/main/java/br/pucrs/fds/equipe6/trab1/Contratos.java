@@ -34,7 +34,7 @@ public class Contratos {
                 .filter(c -> c.getCliente().getCPF().equals(cpf))
                 .toList();
     }
-    
+
     //metodos que usei nos endpoints 5,6 e 10
 
     public Contrato buscarContratoPorId(int id) {
@@ -44,7 +44,7 @@ public class Contratos {
                 .orElse(null);
     }
 
-    public boolean addContratoValidado(ContratoDTO contratoDTO, Clientela clientes, Jogos jogos) {
+    public boolean addContratoValidado(CriaContratoDTO contratoDTO, Clientela clientes, Jogos jogos) {
         if (buscarContratoPorId(contratoDTO.getId()) != null) return false; // id duplicado
 
         Cliente cliente = clientes.buscarClienteCPF(contratoDTO.getCpf());

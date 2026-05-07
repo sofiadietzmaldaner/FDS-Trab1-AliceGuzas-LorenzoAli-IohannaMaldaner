@@ -154,7 +154,7 @@ public class Controller{
     }
      //endpoint 5: Cadastrar novo contrato
     @PostMapping("/cadastro/cadcontrato")
-    public boolean cadastrarContrato(@RequestBody ContratoDTO contratoDTO) {
+    public boolean cadastrarContrato(@RequestBody CriaContratoDTO contratoDTO) {
         return contratos.addContratoValidado(contratoDTO, clientes, jogos);
     }
 
