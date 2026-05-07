@@ -1,15 +1,18 @@
 package br.pucrs.fds.equipe6.trab1;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.ResponseEntity;
 
 
 @RestController
@@ -136,8 +139,11 @@ public class Controller{
 
     //endpoint 3: Consultar todos os contratos clientes, jogos e usos correspondentes
     @GetMapping("/listacontratos")
-    public List<Contrato> consultarContratos() {
-        return contratos.getContratos();
+    public List<ContratoRespostaDTO> consultarContratos() {
+        return contratos.getContratos()
+            .stream()
+            .map(ContratoRespostaDTO::new)
+            .toList();
     }
 
     //endpoint 4: Consultar jogos por situação Disponivel, Contratado, Obsoleto ou Removido

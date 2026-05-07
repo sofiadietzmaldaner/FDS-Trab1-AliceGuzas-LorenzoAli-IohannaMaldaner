@@ -1,10 +1,19 @@
 package br.pucrs.fds.equipe6.trab1;
 
+import java.util.List;
+
 public class ContratoDTO {
     private int id;
     private int periodo;
-    private String cpf;
+
     private int codigoJogo;
+
+    private String cpf;
+    private String nomeCliente;
+    private String nomeJogo;
+    private String categoria;
+
+    private List<UsoDTO> usos;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

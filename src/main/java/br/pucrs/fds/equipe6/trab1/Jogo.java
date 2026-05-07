@@ -5,14 +5,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Jogo {
     private int cod;
     private String nome;
+    @JsonIgnore
     private int ano;
     private double valorMinuto;
     private Categoria categoria;
+    @JsonIgnore
     private Situacao situacao;
-    private Date dataObsoleto;
 
     public Jogo(int cod, String nome, int ano, double valorMinuto, Categoria categoria) {
         this.cod = cod;
@@ -71,13 +74,6 @@ public class Jogo {
         this.categoria = categoria;
     }
 
-    public Date getDataObsoleto() {
-        return dataObsoleto;
-    }
-
-    public void setDataObsoleto(Date dataObsoleto) {
-        this.dataObsoleto = dataObsoleto;
-    }
 
     public boolean estaContratado(Contratos contratos){
         List<Contrato> contratosDoJogo = contratos.getContratos()
@@ -107,7 +103,6 @@ public class Jogo {
         lancamento.set(Calendar.MILLISECOND, 0);
 
         if (lancamento.getTime().before(dataLimite)){
-            this.dataObsoleto = new Date();
             return true;
         }
     } else{

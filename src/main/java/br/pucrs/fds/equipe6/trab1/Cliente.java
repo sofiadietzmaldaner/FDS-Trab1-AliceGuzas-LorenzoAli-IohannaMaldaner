@@ -3,12 +3,17 @@ package br.pucrs.fds.equipe6.trab1;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Cliente {
     private String nome;
     private String CPF;
     private String email;
     private Date data;
+
+    @JsonIgnore
     private String password;
+
     private List<Contrato> contratos;
 
     public Cliente(String nome, String CPF, String email, Date data, String password) {
@@ -43,6 +48,7 @@ public class Cliente {
         this.email = email;
     }
 
+
     public Date getData() {
         return this.data;
     }
@@ -51,6 +57,7 @@ public class Cliente {
         this.data = data;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return this.password;
     }
