@@ -7,6 +7,7 @@ public class CriaContratoDTO {
     private int periodo;
     private String cpf;
     private int codigoJogo;
+    private Date data;
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -19,4 +20,7 @@ public class CriaContratoDTO {
 
     public int getCodigoJogo() { return codigoJogo; }
     public void setCodigoJogo(int codigoJogo) { this.codigoJogo = codigoJogo; }
+
+    public Date getData() { return data; }
+    public void setData(Date data) { this.data = data; }
 }
