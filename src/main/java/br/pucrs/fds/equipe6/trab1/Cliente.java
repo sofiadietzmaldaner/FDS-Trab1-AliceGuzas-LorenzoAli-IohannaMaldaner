@@ -11,7 +11,6 @@ public class Cliente {
     private String email;
     private Date data;
 
-    @JsonIgnore
     private String password;
 
     private List<Contrato> contratos;
