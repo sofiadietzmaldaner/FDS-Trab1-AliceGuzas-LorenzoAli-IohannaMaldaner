@@ -1,5 +1,6 @@
 package br.pucrs.fds.equipe6.trab1;
 
+import java.util.Date;
 import java.util.List;
 
 public class ContratoRespostaDTO {
@@ -13,15 +14,19 @@ public class ContratoRespostaDTO {
     private int codigoJogo;
     private String nomeJogo;
     private String categoria;
+    private Date data;
+    private boolean cancelado;
 
-    private List<UsoDTO> usos;
+    private List<Uso> usos;
 
     public ContratoRespostaDTO(Contrato c) {
         this.id = c.getId();
         this.periodo = c.getPeriodo();
+        this.data = c.getData();
 
         this.cpf = c.getCliente().getCPF();
         this.nomeCliente = c.getCliente().getNome();
+        this.cancelado = c.isCancelado();
 
         this.codigoJogo = c.getJogo().getCod();
         this.nomeJogo = c.getJogo().getNome();
@@ -29,10 +34,7 @@ public class ContratoRespostaDTO {
                           .getCategoria()
                           .getNome();
 
-        this.usos = c.getUsos()
-                     .stream()
-                     .map(UsoDTO::new)
-                     .toList();
+        this.usos = c.getUsos();
     }
 
 
@@ -64,9 +66,23 @@ public class ContratoRespostaDTO {
 
     public void setCategoria(String categoria) {this.categoria = categoria;}
 
-    public List<UsoDTO> getUsos() {return this.usos;}
+    public List<Uso> getUsos() {return this.usos;}
 
-    public void setUsos(List<UsoDTO> usos) {this.usos = usos;}
+    public void setUsos(List<Uso> usos) {this.usos = usos;}
 
+    public Date getData() {
+        return data;
+    }
 
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    public boolean isCancelado() {
+        return cancelado;
+    }
+
+    public void setCancelado(boolean cancelado) {
+        this.cancelado = cancelado;
+    }
 }

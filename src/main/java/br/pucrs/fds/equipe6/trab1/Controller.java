@@ -3,6 +3,7 @@ package br.pucrs.fds.equipe6.trab1;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,8 +42,8 @@ public class Controller{
         jogos = new Jogos();
         jogos.addJogo(new Jogo(1, "The Last of Us",       2013, 199.90, categorias.getCategoriaPorNome("Aventura")));
         jogos.addJogo(new Jogo(2, "Red Dead Redemption",  2018, 249.99, categorias.getCategoriaPorNome("Aventura")));
-        jogos.addJogo(new Jogo(3, "God of War",           2022, 0.05, categorias.getCategoriaPorNome("Aventura")));
-        jogos.addJogo(new Jogo(4, "Cyberpunk 2077",       2020, 149.99, categorias.getCategoriaPorNome("Shooter")));
+        jogos.addJogo(new Jogo(3, "God of War",           2022, 1.00, categorias.getCategoriaPorNome("Aventura")));
+        jogos.addJogo(new Jogo(4, "Cyberpunk 2077",       2020, 2.00, categorias.getCategoriaPorNome("Shooter")));
         jogos.addJogo(new Jogo(5, "Elden Ring",           2022, 349.90, categorias.getCategoriaPorNome("RPG")));
         jogos.addJogo(new Jogo(6, "Fifa",                 2016, 150.00, categorias.getCategoriaPorNome("Simulador")));
         jogos.addJogo(new Jogo(7, "CS 2",                 2023, 349.90, categorias.getCategoriaPorNome("Shooter")));
@@ -65,7 +66,7 @@ public class Controller{
                 new Uso(
                     1,
                     new Date(126, 3, 1),  // abril 2026
-                    new Date(126, 3, 10),
+                    new Date(126, 3, 1),
                     14,
                     18
                 )
@@ -154,7 +155,7 @@ public class Controller{
     }
      //endpoint 5: Cadastrar novo contrato
     @PostMapping("/cadastro/cadcontrato")
-    public boolean cadastrarContrato(@RequestBody CriaContratoDTO contratoDTO) {
+    public boolean cadastrarContrato(@RequestBody @Valid CriaContratoDTO contratoDTO) {
         return contratos.addContratoValidado(contratoDTO, clientes, jogos);
     }
 
@@ -163,6 +164,10 @@ public class Controller{
     public boolean cadastrarUso(@RequestBody UsoDTO usoDTO) {
         Contrato contrato = contratos.buscarContratoPorId(usoDTO.getIdContrato());
         if (contrato == null) return false;
+        List<Uso> usos = contrato.getUsos();
+        for (Uso uso : usos) {
+            if (uso.getNumero() == usoDTO.getNumero()) return false;
+        }
         contrato.addUso(new Uso(usoDTO.getNumero(), usoDTO.getDataInicio(), usoDTO.getDataFim(), usoDTO.getHorarioInicio(), usoDTO.getHorarioFim()));
         return true;
     }

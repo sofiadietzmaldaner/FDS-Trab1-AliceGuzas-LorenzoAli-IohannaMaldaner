@@ -1,5 +1,9 @@
 package br.pucrs.fds.equipe6.trab1;
 
+
+
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 import java.util.Date;
 
@@ -8,6 +12,8 @@ public class CriaContratoDTO {
     private int periodo;
     private String cpf;
     private int codigoJogo;
+
+    @NotNull(message = "Falta a data")
     private Date data;
 
     public int getId() { return id; }

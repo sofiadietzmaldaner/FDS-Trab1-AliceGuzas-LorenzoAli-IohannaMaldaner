@@ -11,14 +11,6 @@ public class UsoDTO {
     private int horarioInicio;
     private int horarioFim;
 
-    public UsoDTO(Uso uso) {
-        this.numero = uso.getNumero();
-        this.dataInicio = uso.getDataInicio();
-        this.dataFim = uso.getDataFim();
-        this.horarioInicio = uso.getHorarioInicio();
-        this.horarioFim = uso.getHorarioFim();
-    }
-
     public int getIdContrato() { return idContrato; }
     public void setIdContrato(int idContrato) { this.idContrato = idContrato; }
 
